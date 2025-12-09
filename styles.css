@@ -113,7 +113,7 @@ button:disabled {
   position: relative;
 }
 
-#captchaCanvas {
+#GAMECanvas {
   width: 100%;
   height: auto;
   display: block;

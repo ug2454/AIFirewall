@@ -1,10 +1,10 @@
-# Micro Motion CAPTCHA . Human Cursor Behavior Verification
-A lightweight web CAPTCHA mechanism that reliably blocks AI agents by analyzing micro-movement patterns that AI mouse controllers cannot replicate.
+# Micro Motion GAME . Human Cursor Behavior Verification
+A lightweight web GAME mechanism that reliably blocks AI agents by analyzing micro-movement patterns that AI mouse controllers cannot replicate.
 
 ---
 
 ## 1. Overview
-The Micro Motion CAPTCHA requires a user to move the mouse cursor along an irregular path without touching the boundaries.  
+The Micro Motion GAME requires a user to move the mouse cursor along an irregular path without touching the boundaries.  
 The system analyzes:
 - human jitter
 - speed variance
@@ -18,7 +18,7 @@ AI agents typically produce:
 - low jitter signals
 - unrealistic timing patterns
 
-This makes the CAPTCHA AI-resistant.
+This makes the GAME AI-resistant.
 
 ---
 
@@ -63,7 +63,7 @@ Agents overcorrect or clip instantly.
 
 ---
 
-## 4. CAPTCHA Flow . UX
+## 4. GAME Flow . UX
 
 1. Show instruction:  
    **"Move your cursor through the path without touching the edges."**
@@ -156,7 +156,7 @@ You can also draw a mask and check pixel collision.
 
 ## 10. Minimal Working HTML Demo
 
-The project ships with a single-page HTML demo (`index.html`) that loads `styles.css` and `main.js`. Simply open it in a modern browser to try the CAPTCHA without any build tooling.
+The project ships with a single-page HTML demo (`index.html`) that loads `styles.css` and `main.js`. Simply open it in a modern browser to try the GAME without any build tooling.
 
 ---
 
@@ -176,7 +176,7 @@ You may use this system freely for commercial or personal use.
 
 ## 13. Interactive Demo Included
 
-This repository now ships with a self-contained HTML demo that implements the Micro Motion CAPTCHA:
+This repository now ships with a self-contained HTML demo that implements the Micro Motion GAME:
 
 1. Open `index.html` in any modern desktop browser (no build step required).
 2. Follow the instruction panel, hover the glowing start node, and move the cursor through the neon path.
@@ -195,4 +195,4 @@ The live demo now evaluates movement chaos using three primary signals:
 - **Coefficient of variation**: `std / mean > 0.25` rewards acceleration spikes even when the absolute variance is low.
 - **Direction noise ratio**: percentage of turns whose angle change exceeds ~20°. Requires >8% noisy turns to pass.
 
-Passing any of those chaos checks (plus the jitter, idle pause, and sample-count requirements) clears the CAPTCHA. Adjust the constants in `main.js` to tighten or loosen the filters for your deployment.
+Passing any of those chaos checks (plus the jitter, idle pause, and sample-count requirements) clears the GAME. Adjust the constants in `main.js` to tighten or loosen the filters for your deployment.

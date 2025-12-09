@@ -1,4 +1,4 @@
-const canvas = document.getElementById("captchaCanvas");
+const canvas = document.getElementById("GAMECanvas");
 const ctx = canvas.getContext("2d");
 const statusEl = document.getElementById("status");
 const metricsEl = document.getElementById("metrics");
@@ -119,7 +119,7 @@ function completeAttempt() {
 
   const tone = evaluation.pass ? "pass" : "fail";
   const message = evaluation.pass
-    ? "Human micro motion detected. CAPTCHA cleared."
+    ? "Human micro motion detected. GAME cleared."
     : "Motion looked synthetic. Try again.";
 
   setStatus(message, tone);
