@@ -74,64 +74,19 @@ Agents overcorrect or clip instantly.
 
 ---
 
-## 5. Canvas Path Generation . Pseudocode
+## 5. Canvas Path Generation
 
-```js
-function generatePath(ctx) {
-    const points = [];
-    const width = ctx.canvas.width;
-    const height = ctx.canvas.height;
-
-    let x = 30;
-    let y = height / 2;
-
-    for (let i = 0; i < 12; i++) {
-        x += 60;
-        y += (Math.random() * 120) - 60; // up/down wiggle
-        points.push({ x, y });
-    }
-
-    ctx.lineWidth = 40; // path thickness
-    ctx.lineCap = "round";
-    ctx.strokeStyle = "#4af7ff";
-
-    ctx.beginPath();
-    ctx.moveTo(30, height / 2);
-
-    points.forEach(p => ctx.lineTo(p.x, p.y));
-    ctx.stroke();
-
-    return points;
-}
-```
+- Random control points are laid out horizontally with ±60 px vertical jitter.
+- The canvas draws a thick, rounded stroke through each point using a neon color palette.
+- Start and end nodes are highlighted separately to guide the user.
 
 ---
 
 ## 6. Recording Cursor Movement
 
-```js
-let movements = [];
-
-function startRecording() {
-    movements = [];
-    lastTime = performance.now();
-    document.addEventListener("mousemove", recordMovement);
-}
-
-function recordMovement(e) {
-    const now = performance.now();
-    movements.push({
-        x: e.clientX,
-        y: e.clientY,
-        dt: now - lastTime
-    });
-    lastTime = now;
-}
-
-function stopRecording() {
-    document.removeEventListener("mousemove", recordMovement);
-}
-```
+- When the cursor enters the start node we reset the movement buffer, grab `performance.now()`, and begin listening for `mousemove`.
+- Every movement sample stores `x`, `y`, delta time, and running elapsed time so we can analyze velocity windows later.
+- On completion or fail, the listener detaches and the movement buffer is evaluated.
 
 ---
 
@@ -139,23 +94,7 @@ function stopRecording() {
 
 ### 7.1 Velocity Variance
 
-```js
-function velocityStats(movements) {
-    const vels = [];
-    for (let i = 1; i < movements.length; i++) {
-        const dx = movements[i].x - movements[i - 1].x;
-        const dy = movements[i].y - movements[i - 1].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        const t = movements[i].dt;
-        vels.push(dist / (t || 1));
-    }
-
-    const mean = vels.reduce((a,b) => a+b, 0) / vels.length;
-    const variance = vels.reduce((a,b) => a + Math.pow(b-mean, 2), 0) / vels.length;
-
-    return { mean, variance };
-}
-```
+Velocities are computed over sliding windows of cursor samples (multiple points at a time). We track the mean, variance, standard deviation, and coefficient of variation to detect chaotic acceleration spikes.
 
 Expected human:
 - mean velocity: 0.5 . 8 px/ms
@@ -168,17 +107,7 @@ AI:
 
 ### 7.2 Jitter Noise Test
 
-```js
-function jitterScore(movements) {
-    let jitter = 0;
-    for (let i = 1; i < movements.length; i++) {
-        const dx = Math.abs(movements[i].x - movements[i-1].x);
-        const dy = Math.abs(movements[i].y - movements[i-1].y);
-        if (dx < 3 && dy < 3) jitter++;
-    }
-    return jitter;
-}
-```
+Count how many consecutive samples move less than ±3 px in both axes. Humans typically have 15–40% jitter segments whereas automation hangs below 5%.
 
 Humans produce:
 - 15 . 40 percent jitter segments  
@@ -190,11 +119,7 @@ AI:
 
 ### 7.3 Idle Pause Test
 
-```js
-function idlePauses(movements) {
-    return movements.filter(m => m.dt > 50).length;
-}
-```
+Sample count of events where the delta time exceeds 50 ms. Micro pauses from humans often land between 3 and 12 per run, while AI controllers seldom pause.
 
 Humans have:
 - 3 . 12 micro-pauses  
@@ -206,19 +131,7 @@ AI:
 
 ### 7.4 Final Combined Score
 
-```js
-function evaluate(movements) {
-    const { variance } = velocityStats(movements);
-    const jitter = jitterScore(movements);
-    const pauses = idlePauses(movements);
-
-    const passVariance = variance > 0.4;
-    const passJitter = jitter > movements.length * 0.10;
-    const passPauses = pauses >= 2;
-
-    return passVariance && passJitter && passPauses;
-}
-```
+We combine the velocity chaos, jitter ratio, idle pause count, direction-noise ratio, and minimum sample count. All metrics must meet or exceed the tuned thresholds to accept the attempt.
 
 ---
 
@@ -243,26 +156,7 @@ You can also draw a mask and check pixel collision.
 
 ## 10. Minimal Working HTML Demo
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-  #canvas { border:1px solid #333; }
-</style>
-</head>
-<body>
-
-<canvas id="canvas" width="900" height="300"></canvas>
-<button id="startBtn">Start</button>
-
-<script>
-  // Include the code from earlier sections here for a full demo
-</script>
-
-</body>
-</html>
-```
+The project ships with a single-page HTML demo (`index.html`) that loads `styles.css` and `main.js`. Simply open it in a modern browser to try the CAPTCHA without any build tooling.
 
 ---
 
