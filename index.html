@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Micro Motion CAPTCHA Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="panel">
+      <h1>Micro Motion CAPTCHA</h1>
+      <p class="description">
+        Move your cursor from the neon start node to the end node while staying inside the glowing track.
+        Hover over the start node to begin recording. Leaving the track or canvas fails the attempt.
+      </p>
+      <div class="controls">
+        <button id="newPathBtn">Regenerate Path</button>
+        <button id="resetBtn">Reset Attempt</button>
+      </div>
+      <p id="status" class="status">Hover the start beacon to begin.</p>
+      <div id="metrics" class="metrics"></div>
+    </section>
+
+    <section class="canvas-shell">
+      <canvas id="captchaCanvas" width="900" height="360"></canvas>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

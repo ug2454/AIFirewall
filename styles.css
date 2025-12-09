@@ -1,0 +1,139 @@
+:root {
+  color-scheme: dark;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #05070b;
+  color: #d6f2ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.app {
+  width: min(1200px, 100%);
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) 2fr;
+  gap: 28px;
+  background: radial-gradient(circle at top, rgba(50, 125, 255, 0.2), transparent 60%);
+}
+
+.panel {
+  background-color: #0f1622;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 25px 40px rgba(0, 0, 0, 0.45);
+}
+
+.panel h1 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.6rem;
+}
+
+.description {
+  margin-top: 0;
+  opacity: 0.85;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+button {
+  background: linear-gradient(135deg, #3ac7ff, #00ffa7);
+  color: #061225;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 15px 25px rgba(42, 212, 255, 0.35);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.status {
+  font-weight: 600;
+  min-height: 32px;
+}
+
+.status[data-state="ready"] {
+  color: #8bc1ff;
+}
+
+.status[data-state="recording"] {
+  color: #4af7ff;
+}
+
+.status[data-state="fail"] {
+  color: #ff6b8b;
+}
+
+.status[data-state="pass"] {
+  color: #66ffb9;
+}
+
+.metrics {
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.9rem;
+  background-color: #080f18;
+  border-radius: 10px;
+  padding: 16px;
+  min-height: 130px;
+  line-height: 1.5;
+  color: #8bc1ff;
+  box-shadow: inset 0 0 0 1px rgba(74, 247, 255, 0.2);
+}
+
+.canvas-shell {
+  background-color: #00060f;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 30px 60px rgba(5, 12, 25, 0.8);
+  position: relative;
+}
+
+#captchaCanvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: radial-gradient(circle at center, rgba(74, 247, 255, 0.08), rgba(4, 6, 20, 0.9));
+  border-radius: 12px;
+  border: 1px solid rgba(74, 247, 255, 0.15);
+}
+
+.canvas-shell::after {
+  content: "Stay inside the glow";
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 960px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+}
